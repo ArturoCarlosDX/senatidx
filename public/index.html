@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Inventario</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <main class="container">
+        <header class="hero">
+            <div class="hero-icon">📦</div>
+            <div>
+                <h1>Sistema de Inventario</h1>
+                <p>Gestiona tus productos de manera fácil y rápida.</p>
+            </div>
+        </header>
+
+        <section class="card form-card">
+            <div class="card-header">
+                <h2>Nuevo Producto</h2>
+            </div>
+            <form id="product-form">
+                <div class="field-group">
+                    <label for="name">Nombre del producto</label>
+                    <input id="name" name="name" type="text" placeholder="Ej: Laptop Lenovo" required />
+                </div>
+                <div class="field-group">
+                    <label for="price">Precio (S/.)</label>
+                    <input id="price" name="price" type="number" step="0.01" placeholder="Ej: 2500" required />
+                </div>
+                <div class="field-group">
+                    <label for="stock">Stock</label>
+                    <input id="stock" name="stock" type="number" placeholder="Ej: 10" required />
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                    <button type="button" id="cancel-edit" class="btn btn-secondary hidden">Cancelar</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="card table-card">
+            <div class="card-header">
+                <h2>Lista de Productos</h2>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio (S/.)</th>
+                            <th>Stock</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
