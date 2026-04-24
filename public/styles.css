@@ -1,30 +1,127 @@
 :root {
-  --bg: #f0f4f8;
-  --card: #ffffff;
-  --text: #1f2937;
-  --muted: #6b7280;
-  --primary: #047857;
-  --primary-hover: #065f46;
-  --danger: #b91c1c;
-  --warning: #f59e0b;
-  --border: #d1d5db;
+  --bg: #0a0e27;
+  --card: #1a1f3a;
+  --text: #e8eef7;
+  --muted: #8892b0;
+  --primary: #00d9ff;
+  --primary-hover: #00b8cc;
+  --danger: #ff4757;
+  --warning: #ffa502;
+  --border: #2a3f5f;
 }
 
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
   font-family: Inter, system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
+  position: relative;
+  overflow-y: auto;
+}
+
+/* Matrix Background Effect */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(10, 14, 39, 0.98) 0%, rgba(20, 25, 50, 0.98) 100%);
+  pointer-events: none;
+  z-index: -2;
+}
+
+.matrix-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.85;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.matrix-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  display: flex;
+  opacity: 1;
+}
+
+.matrix-pattern {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.matrix-column {
+  position: absolute;
+  width: 30px;
+  height: 100%;
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: bold;
+  animation: fall linear infinite;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 217, 255, 1) 0%,
+    rgba(0, 188, 212, 0.8) 20%,
+    rgba(76, 175, 80, 0.6) 40%,
+    rgba(76, 175, 80, 0.3) 60%,
+    rgba(76, 175, 80, 0.1) 80%,
+    transparent 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: rgba(0, 217, 255, 1);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 1px;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
 }
 
 .container {
   max-width: 1000px;
   margin: 32px auto;
   padding: 0 16px 32px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero {
@@ -33,9 +130,12 @@ body {
   gap: 16px;
   margin-bottom: 24px;
   padding: 24px;
-  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.15) 0%, rgba(76, 175, 80, 0.15) 100%);
+  border: 1px solid rgba(0, 217, 255, 0.3);
   color: white;
   border-radius: 16px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .hero-icon {
@@ -49,21 +149,24 @@ body {
 }
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: rgba(26, 31, 58, 0.7);
+  border: 1px solid rgba(0, 217, 255, 0.2);
   border-radius: 18px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 8px 32px rgba(0, 217, 255, 0.1);
   margin-bottom: 24px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .card-header {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
   padding: 18px 24px;
 }
 
 .card-header h2 {
   margin: 0;
   font-size: 1.1rem;
+  color: var(--primary);
 }
 
 .form-card {
@@ -83,9 +186,18 @@ body {
 
 .field-group input {
   padding: 12px 14px;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 217, 255, 0.2);
   border-radius: 12px;
-  background: #fbfdff;
+  background: rgba(10, 14, 39, 0.5);
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.field-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(10, 14, 39, 0.8);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.2);
 }
 
 .actions {
@@ -101,30 +213,48 @@ body {
   padding: 12px 20px;
   cursor: pointer;
   font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .btn-primary {
-  background: var(--primary);
-  color: white;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.8) 0%, rgba(0, 188, 212, 0.8) 100%);
+  color: #000;
+  border: 1px solid rgba(0, 217, 255, 0.5);
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.3);
 }
 
 .btn-primary:hover {
-  background: var(--primary-hover);
+  background: linear-gradient(135deg, #00d9ff 0%, #00bcd4 100%);
+  box-shadow: 0 0 20px rgba(0, 217, 255, 0.6);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
-  background: #e5e7eb;
+  background: rgba(76, 175, 80, 0.2);
   color: var(--text);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.btn-secondary:hover {
+  background: rgba(76, 175, 80, 0.4);
+  border-color: rgba(76, 175, 80, 0.6);
 }
 
 .btn-danger {
-  background: var(--danger);
-  color: white;
+  background: rgba(255, 71, 87, 0.2);
+  color: #ff4757;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.btn-danger:hover {
+  background: rgba(255, 71, 87, 0.4);
+  border-color: rgba(255, 71, 87, 0.6);
 }
 
 .btn-warning {
-  background: var(--warning);
-  color: white;
+  background: rgba(255, 165, 2, 0.2);
+  color: #ffa502;
+  border: 1px solid rgba(255, 165, 2, 0.3);
 }
 
 .hidden {
@@ -148,16 +278,16 @@ th,
 td {
   padding: 14px 12px;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
 }
 
 th {
-  color: var(--muted);
+  color: var(--primary);
   font-size: 0.95rem;
 }
 
 tbody tr:hover {
-  background: #f8fafc;
+  background: rgba(0, 217, 255, 0.1);
 }
 
 .actions-row {
@@ -171,3 +301,4 @@ tbody tr:hover {
     align-items: flex-start;
   }
 }
+
