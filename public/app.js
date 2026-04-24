@@ -1,77 +1,11 @@
-// Matrix Background Effect
-const initializeMatrixBackground = () => {
-  const matrixPattern = document.getElementById("matrix-pattern");
-  if (!matrixPattern) return;
-  
-  const japaneseChars = "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンガギグゲゴザジズゼゾダヂヅデドバビブベボパピプペポヴァィゥェォャュョッ";
-  const allChars = japaneseChars + "0123456789";
-  const columnCount = Math.ceil(window.innerWidth / 30);
-
-  for (let i = 0; i < columnCount; i++) {
-    const column = document.createElement("div");
-    column.className = "matrix-column";
-    column.style.left = (i * 30) + "px";
-    column.style.animationDuration = (4 + Math.random() * 4) + "s";
-    column.style.animationDelay = -(Math.random() * 6) + "s";
-    
-    // Create repeated characters for continuous fall effect
-    let text = "";
-    for (let j = 0; j < 30; j++) {
-      text += allChars.charAt(Math.floor(Math.random() * allChars.length));
-    }
-    column.textContent = text;
-    matrixPattern.appendChild(column);
-  }
-};
-
-// Initialize Matrix on page load
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeMatrixBackground);
-} else {
-  initializeMatrixBackground();
-}
-
-// Re-initialize on window resize
-window.addEventListener("resize", () => {
-  const matrixPattern = document.getElementById("matrix-pattern");
-  if (matrixPattern) {
-    matrixPattern.innerHTML = "";
-    initializeMatrixBackground();
-  }
-});
-
-let form;
-let nameInput;
-let priceInput;
-let stockInput;
-let tableBody;
-let cancelEditButton;
+const form = document.getElementById("product-form");
+const nameInput = document.getElementById("name");
+const priceInput = document.getElementById("price");
+const stockInput = document.getElementById("stock");
+const tableBody = document.getElementById("products-table-body");
+const cancelEditButton = document.getElementById("cancel-edit");
 
 let currentEditId = null;
-
-// Initialize DOM elements when document is ready
-const initializeDOMElements = () => {
-  form = document.getElementById("product-form");
-  nameInput = document.getElementById("name");
-  priceInput = document.getElementById("price");
-  stockInput = document.getElementById("stock");
-  tableBody = document.getElementById("products-table-body");
-  cancelEditButton = document.getElementById("cancel-edit");
-  
-  // Fetch products on load
-  fetchProducts();
-  
-  // Setup event listeners
-  form.addEventListener("submit", handleFormSubmit);
-  cancelEditButton.addEventListener("click", resetForm);
-  tableBody.addEventListener("click", handleTableClick);
-};
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeDOMElements);
-} else {
-  initializeDOMElements();
-}
 
 const fetchProducts = async () => {
   const response = await fetch("/api/products");
@@ -113,7 +47,7 @@ const fillFormForEdit = (product) => {
   cancelEditButton.classList.remove("hidden");
 };
 
-const handleFormSubmit = async (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const productData = {
     name: nameInput.value.trim(),
@@ -149,9 +83,13 @@ const handleFormSubmit = async (event) => {
   } catch (error) {
     alert("Ocurrió un error al guardar el producto.");
   }
-};
+});
 
-const handleTableClick = async (event) => {
+cancelEditButton.addEventListener("click", () => {
+  resetForm();
+});
+
+tableBody.addEventListener("click", async (event) => {
   const button = event.target.closest("button");
   if (!button) return;
 
@@ -170,4 +108,6 @@ const handleTableClick = async (event) => {
     await fetch(`/api/products/${id}`, { method: "DELETE" });
     await fetchProducts();
   }
-};
+});
+
+fetchProducts();
